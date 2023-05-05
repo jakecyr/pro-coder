@@ -1,10 +1,10 @@
 {
-  "name": "code-for-me",
-  "displayName": "Code For Me",
-  "description": "Writes code for you with GPT-4",
+  "name": "pro-coder",
+  "displayName": "Pro Coder - GPT-4 Code Completions",
+  "description": "Writes code for you with GPT-4 or GPT-3.5-Turbo.",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.78.0"
+    "vscode": "^1.77.0"
   },
   "categories": [
     "Other"
@@ -12,12 +12,46 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "keybindings": [
+      {
+        "key": "cmd+enter",
+        "command": "procoder.completeCode"
+      }
+    ],
     "commands": [
       {
-        "command": "code-for-me.helloWorld",
-        "title": "Hello World"
+        "command": "procoder.completeCode",
+        "title": "Complete Code"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Pro Coder",
+      "properties": {
+        "procoder.openAISecret": {
+          "type": "string",
+          "description": "Open AI Secret Key"
+        },
+        "procoder.maxTokens": {
+          "type": "number",
+          "default": 500,
+          "description": "Max Tokens"
+        },
+        "procoder.model": {
+          "type": "string",
+          "default": "gpt-3.5-turbo",
+          "description": "Model"
+        },
+        "procoder.completionType": {
+          "type": "string",
+          "enum": [
+            "Chat Completion",
+            "Text Completion"
+          ],
+          "default": "Text Completion",
+          "description": "Completion Type"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -28,16 +62,19 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.78.0",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/vscode": "^1.78.0",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "@typescript-eslint/parser": "^5.59.1",
+    "@vscode/test-electron": "^2.3.0",
     "eslint": "^8.39.0",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
-    "typescript": "^5.0.4",
-    "@vscode/test-electron": "^2.3.0"
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "openai": "^3.2.1"
   }
 }
