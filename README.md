@@ -4,7 +4,7 @@ A Visual Studio Code extension that uses OpenAI GPT models to fix bugs in your c
 
 ## Installation
 
-Install from the VSCode extensions menu by searching for "Pro Coder".
+Install from the VSCode extensions menu by searching for "Pro Coder" or install from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=JakeCyr.pro-coder).
 
 ## Usage
 
