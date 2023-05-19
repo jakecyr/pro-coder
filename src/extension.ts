@@ -21,12 +21,12 @@ export function activate(context: vscode.ExtensionContext) {
     }
   }
 
-  const disposable = vscode.commands.registerCommand(
+  const completeCode = vscode.commands.registerCommand(
     `${extensionName}.completeCode`,
     completeCodeCommand(settings),
   );
 
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(completeCode);
 }
 
 export function deactivate() {}

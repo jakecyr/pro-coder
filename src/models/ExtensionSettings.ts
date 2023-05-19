@@ -1,6 +1,5 @@
 export interface ExtensionSettings {
   openAISecret: string;
-  maxTokens: number;
+  temperature: number;
   model: string;
-  completionType: string;
 }

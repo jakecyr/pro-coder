@@ -1,36 +1,30 @@
 import * as vscode from 'vscode';
 import { ExtensionSettings } from '../models/ExtensionSettings';
-import { createCompletion, createChatCompletion } from '../clients/openai-client';
+import { getEditedCode } from '../clients/openai-client';
 
 export const completeCodeCommand = (settings: ExtensionSettings) => async () => {
   const editor = vscode.window.activeTextEditor;
 
   if (!editor) {
-    vscode.window.showWarningMessage('No activate editor found for code completion.');
+    vscode.window.showWarningMessage('No active editor found for code completion.');
     return;
   }
 
   const document = editor.document;
-  const selection = editor.selection;
-  const cursorLineNumber = selection.active;
-  const text = document.getText();
-  const linesPrior = text.split('\n').slice(0, cursorLineNumber.line);
 
-  const startOfCurrentLine = new vscode.Position(cursorLineNumber.line, 0);
-  const workspaceEditor = new vscode.WorkspaceEdit();
+  const fullRange = new vscode.Range(
+    document.positionAt(0),
+    document.positionAt(document.getText().length),
+  );
 
   try {
-    const useTextCompletion = (settings.completionType as string) === 'Text Completion';
-    const completionFunction = useTextCompletion ? createCompletion : createChatCompletion;
+    vscode.window.showInformationMessage(`Completing code and fixing bugs...`);
 
-    vscode.window.showInformationMessage(
-      `Generating code with ${useTextCompletion ? 'text' : 'chat'} completion...`,
-    );
-
-    const completedCode = await completionFunction(
-      linesPrior.join('\n'),
+    const completedCode = await getEditedCode(
+      document.getText(fullRange),
       settings.openAISecret as string,
-      settings.maxTokens as number,
+      'Complete the code.',
+      settings.temperature as number,
       settings.model as string,
     );
 
@@ -39,16 +33,11 @@ export const completeCodeCommand = (settings: ExtensionSettings) => async () => 
       return;
     }
 
-    const textEdit = new vscode.TextEdit(
-      new vscode.Range(startOfCurrentLine, cursorLineNumber),
-      completedCode,
-    );
+    editor.edit((editBuilder) => {
+      editBuilder.replace(fullRange, completedCode);
+    });
 
-    workspaceEditor.set(document.uri, [textEdit]);
-
-    await vscode.workspace.applyEdit(workspaceEditor);
-
-    vscode.window.showInformationMessage('Completed code.');
+    vscode.window.showInformationMessage('Completed code and fixed bugs.');
   } catch (error) {
     vscode.window.showErrorMessage(`Error completing code: ${error}`);
   }

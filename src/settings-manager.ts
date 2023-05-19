@@ -4,26 +4,21 @@ import { ExtensionSettings } from './models/ExtensionSettings';
 import { InvalidSettingError } from './errors/InvalidSettingError';
 
 export class SettingsManager {
-  public static getSettings(
-    workspaceConfiguration: vscode.WorkspaceConfiguration,
-  ): ExtensionSettings {
-    const settings: ExtensionSettings = {
+  static getSettings(workspaceConfiguration: vscode.WorkspaceConfiguration): ExtensionSettings {
+    return {
       openAISecret: workspaceConfiguration.openAISecret,
-      maxTokens: workspaceConfiguration.maxTokens,
       model: workspaceConfiguration.model,
-      completionType: workspaceConfiguration.completionType,
+      temperature: workspaceConfiguration.temperature,
     };
-
-    return settings;
   }
 
-  public static validateSettings(settings: ExtensionSettings) {
+  static validateSettings(settings: ExtensionSettings) {
     if (!settings.openAISecret) {
       throw new InvalidSettingError('Missing OpenAI secret key. Please update in settings.');
     }
 
-    if (!settings.maxTokens) {
-      throw new InvalidSettingError('Missing value for max tokens. Please update in settings.');
+    if (settings.temperature < 0 || settings.temperature > 2) {
+      throw new InvalidSettingError('Invalid value for temperature. Should be >=0 and <= 2.');
     }
 
     if (!settings.model) {

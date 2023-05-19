@@ -16,12 +16,16 @@
       {
         "key": "cmd+enter",
         "command": "procoder.completeCode"
+      },
+      {
+        "key": "ctrl+enter",
+        "command": "procoder.completeCode"
       }
     ],
     "commands": [
       {
         "command": "procoder.completeCode",
-        "title": "Complete Code"
+        "title": "Complete Code and Fix Bugs"
       }
     ],
     "configuration": {
@@ -31,24 +35,21 @@
           "type": "string",
           "description": "Open AI Secret Key"
         },
-        "procoder.maxTokens": {
+        "procoder.temperature": {
           "type": "number",
-          "default": 500,
-          "description": "Max Tokens"
+          "default": 0,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "Temperature"
         },
         "procoder.model": {
           "type": "string",
-          "default": "gpt-3.5-turbo",
-          "description": "Model"
-        },
-        "procoder.completionType": {
-          "type": "string",
           "enum": [
-            "Chat Completion",
-            "Text Completion"
+            "text-davinci-edit-001",
+            "code-davinci-edit-001"
           ],
-          "default": "Text Completion",
-          "description": "Completion Type"
+          "default": "text-davinci-edit-001",
+          "description": "Edits Model"
         }
       }
     }
