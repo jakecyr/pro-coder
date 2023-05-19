@@ -2,12 +2,16 @@
 
 A Visual Studio Code extension that uses OpenAI GPT models to fix bugs in your code and complete any missing blocks.
 
+## Installation
+
+Install from the VSCode extensions menu by searching for "Pro Coder".
+
 ## Usage
 
-Below are two methods to run the extension on your code:
+Below are two methods to run the extension on your code. Make sure the editor is active before running either:
 
 - Run the command from the VSCode command palette: "Complete Code and Fix Bugs"
-- Run using the keyboard shortcut (when the editor pane is active) Cmd+Enter or Ctrl+Enter.
+- Run using the keyboard shortcut Cmd+Enter or Ctrl+Enter.
 
 ## Examples
 
